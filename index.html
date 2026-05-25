@@ -4,11 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FundBoost — Apply</title>
- <meta property="og:title" content="FundBoost — Apply" />
-<meta property="og:description" content="Personal loans, fast and simple. Get a decision in minutes." />
-<meta property="og:image" content="https://apply.fundboost.ca/preview.png" />
-<meta property="og:url" content="https://apply.fundboost.ca" />
-<meta name="twitter:card" content="summary_large_image" />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -495,21 +490,22 @@
   <div class="logo-wrap">
     <img src="LOGO_PLACEHOLDER" alt="FundBoost" id="logo-img">
   </div>
-  <h1 class="landing-tagline" data-comment-anchor="b401710e:9">Personal loans,<br>fast and simple</h1>
-  <p class="landing-sub">Tell us a bit about yourself and get a decision in minutes — no hard credit check.</p>
+  <h1 class="landing-tagline" data-comment-anchor="b401710e:9">E-transfer loans,
+fast and simple</h1>
+  <p class="landing-sub">Tell us a bit about yourself and get a decision in minutes — it's that simple.</p>
   <button class="start-btn" onclick="showForm()">
     Start your application
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </button>
   <div class="trust-row">
     <div class="trust-item"><strong>2 min</strong><span>to apply</span></div>
-    <div class="trust-item"><strong>Soft check</strong><span>no credit hit</span></div>
+    <div class="trust-item"><strong>No credit check</strong><span>no impact on score</span></div>
     <div class="trust-item"><strong>24 hr</strong><span>funding</span></div>
   </div>
 </div>
 
 <!-- FORM SCREEN -->
-<div class="card" id="form-card" style="display:none;">
+<div class="card" id="form-card" style="display:none; max-width: 396px; padding: 2.25rem 1.75rem;">
   <div class="logo-wrap" style="margin-bottom:1.25rem;">
     <img src="LOGO_PLACEHOLDER" alt="FundBoost" id="logo-img2">
   </div>
@@ -560,7 +556,7 @@
   <div class="checkbox-group">
     <label class="checkbox-row" id="termsRow">
       <input type="checkbox" id="agreeTerms" required>
-      <span>I have read &amp; accept the <a href="#" target="_blank">Terms of Service</a><span class="req">*</span></span>
+      <span>I have read &amp; accept the <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms of Service</a><span class="req">*</span></span>
     </label>
     <label class="checkbox-row">
       <input type="checkbox" id="agreeMarketing">
@@ -571,7 +567,7 @@
   <div id="err" class="err">Please complete all required fields.</div>
   <button class="submit-btn" id="submit-btn" onclick="submitForm()" data-comment-anchor="ae07eb7f:89">Next →</button>
   <p class="back-link" onclick="showLanding()">← Back</p>
-  <p class="lock-note">🔒 256-bit encrypted &nbsp;·&nbsp; Soft check only &nbsp;·&nbsp; No spam ever</p>
+  <p class="lock-note">🔒 256-bit encrypted  ·  No credit check  ·  No spam ever</p>
 </div>
 
 <!-- SUCCESS SCREEN -->
