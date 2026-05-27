@@ -4,11 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FundBoost — Apply</title>
- <meta property="og:title" content="FundBoost — Apply" />
-<meta property="og:description" content="Personal loans, fast and simple. Get a decision in minutes." />
-<meta property="og:image" content="https://apply.fundboost.ca/preview.png" />
-<meta property="og:url" content="https://apply.fundboost.ca" />
-<meta name="twitter:card" content="summary_large_image" />
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -262,11 +257,11 @@
 
   .field input, .field select {
     width: 100%;
-    padding: 12px 14px;
+    padding: 10px 14px;
     background: #F7F8FA;
     border: 1px solid #E4E6EC;
     border-radius: 10px;
-    font-size: 16px;
+    font-size: 14px;
     color: var(--ink);
     font-family: 'Manrope', system-ui, sans-serif;
     outline: none;
@@ -310,6 +305,40 @@
     opacity: 0.55;
   }
   .field input[type="date"] { color-scheme: light; }
+
+  /* DOB — 3 native dropdowns */
+  .dob-group {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr 1.1fr;
+    gap: 8px;
+  }
+  .dob-group select {
+    width: 100%;
+    padding: 10px 10px;
+    background: #F7F8FA;
+    border: 1px solid #E4E6EC;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--ink);
+    font-family: 'Manrope', system-ui, sans-serif;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%239097A8' d='M6 7L0 1l1.4-1L6 4.2 10.6 0 12 1z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 30px;
+  }
+  .dob-group select:focus {
+    border-color: var(--purple);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(91,79,238,0.12);
+  }
+  .field.invalid .dob-group select {
+    border-color: #DC2626;
+    background-color: #FEF2F2;
+  }
 
   /* Checkboxes */
   .checkbox-group {
@@ -451,6 +480,16 @@
       padding: 2rem 1.25rem;
       border-radius: 18px;
     }
+    /* Bigger inputs on mobile (16px prevents iOS auto-zoom) */
+    .field input, .field select,
+    .dob-group select {
+      padding: 12px 14px;
+      font-size: 16px;
+    }
+    .dob-group select {
+      padding: 12px 10px;
+      padding-right: 30px;
+    }
     .logo-wrap img {
       height: 70px;
     }
@@ -521,9 +560,16 @@ fast and simple</h1>
     <div class="field"><label>First name<span class="req">*</span></label><input type="text" id="firstName" placeholder="Jane" required></div>
     <div class="field"><label>Last name<span class="req">*</span></label><input type="text" id="lastName" placeholder="Smith" required></div>
   </div>
-  <div class="field"><label>Cellphone<span class="req">*</span></label><input type="tel" id="phone" placeholder="(514) 555-0100" required></div>
+  <div class="field"><label>Cellphone<span class="req">*</span></label><input type="tel" id="phone" placeholder="(514) 555-0100" inputmode="numeric" autocomplete="tel-national" maxlength="14" required></div>
   <div class="field"><label>Email<span class="req">*</span></label><input type="email" id="email" placeholder="jane@email.com" required></div>
-  <div class="field"><label>Date of birth<span class="req">*</span></label><input type="date" id="dob" required></div>
+  <div class="field">
+    <label>Date of birth<span class="req">*</span></label>
+    <div class="dob-group">
+      <select id="dobDay"   aria-label="Day"   required></select>
+      <select id="dobMonth" aria-label="Month" required></select>
+      <select id="dobYear"  aria-label="Year"  required></select>
+    </div>
+  </div>
 
   <hr class="divider">
   <div class="section-label">Loan details</div>
@@ -695,7 +741,7 @@ fast and simple</h1>
   }
 
   function submitForm() {
-    var required = ['firstName','lastName','phone','email','dob','loanAmount','incomeSource'];
+    var required = ['firstName','lastName','phone','email','loanAmount','incomeSource'];
     var vals = {};
     var firstInvalid = null;
     var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -711,7 +757,6 @@ fast and simple</h1>
       var val = el.value.trim();
       vals[id] = val;
       var bad = !val;
-      // Extra check: email format
       if (id === 'email' && val && !emailRe.test(val)) bad = true;
       if (bad) {
         ok = false;
@@ -727,6 +772,27 @@ fast and simple</h1>
       ok = false;
       document.getElementById('termsRow').classList.add('invalid');
       if (!firstInvalid) firstInvalid = termsEl;
+    }
+
+    // ── DOB: 3 dropdowns (Day / Month / Year) ──
+    var dayEl   = document.getElementById('dobDay');
+    var monthEl = document.getElementById('dobMonth');
+    var yearEl  = document.getElementById('dobYear');
+    var d = parseInt(dayEl.value, 10);
+    var m = parseInt(monthEl.value, 10);
+    var y = parseInt(yearEl.value, 10);
+    var dobBad = !d || !m || !y;
+    if (!dobBad) {
+      // Validate the actual calendar date (catches Feb 30, Apr 31, etc.)
+      var test = new Date(y, m - 1, d);
+      if (test.getFullYear() !== y || test.getMonth() !== m - 1 || test.getDate() !== d) dobBad = true;
+    }
+    if (dobBad) {
+      ok = false;
+      dayEl.closest('.field').classList.add('invalid');
+      if (!firstInvalid) firstInvalid = dayEl;
+    } else {
+      vals.dob = y + '-' + String(m).padStart(2, '0') + '-' + String(d).padStart(2, '0');
     }
 
     var errEl = document.getElementById('err');
@@ -760,7 +826,8 @@ fast and simple</h1>
   // Clear invalid state on a field as soon as the user fixes it
   document.addEventListener('input', function(e) {
     var field = e.target.closest('.field');
-    if (field && field.classList.contains('invalid') && e.target.value.trim()) {
+    if (!field) return;
+    if (field.classList.contains('invalid') && e.target.value.trim()) {
       field.classList.remove('invalid');
     }
   });
@@ -778,6 +845,56 @@ fast and simple</h1>
     document.getElementById('form-card').style.display = 'none';
     document.getElementById('success-card').style.display = 'block';
   }
+
+  // ── Phone auto-format: (XXX) XXX-XXXX ──
+  (function() {
+    var phoneEl = document.getElementById('phone');
+    if (!phoneEl) return;
+    function formatPhone(digits) {
+      digits = digits.slice(0, 10);
+      if (digits.length === 0) return '';
+      if (digits.length < 4) return '(' + digits;
+      if (digits.length < 7) return '(' + digits.slice(0, 3) + ') ' + digits.slice(3);
+      return '(' + digits.slice(0, 3) + ') ' + digits.slice(3, 6) + '-' + digits.slice(6);
+    }
+    phoneEl.addEventListener('input', function(e) {
+      var raw = e.target.value.replace(/\D/g, '');
+      e.target.value = formatPhone(raw);
+    });
+    phoneEl.addEventListener('paste', function(e) {
+      e.preventDefault();
+      var pasted = (e.clipboardData || window.clipboardData).getData('text');
+      var digits = pasted.replace(/\D/g, '');
+      phoneEl.value = formatPhone(digits);
+    });
+  })();
+
+  // ── Populate DOB dropdowns ──
+  (function() {
+    var dayEl   = document.getElementById('dobDay');
+    var monthEl = document.getElementById('dobMonth');
+    var yearEl  = document.getElementById('dobYear');
+    if (!dayEl || !monthEl || !yearEl) return;
+    var months = ['January','February','March','April','May','June',
+                  'July','August','September','October','November','December'];
+
+    dayEl.innerHTML = '<option value="">Day</option>';
+    for (var d = 1; d <= 31; d++) {
+      dayEl.insertAdjacentHTML('beforeend', '<option value="' + d + '">' + d + '</option>');
+    }
+
+    monthEl.innerHTML = '<option value="">Month</option>';
+    months.forEach(function(name, i) {
+      monthEl.insertAdjacentHTML('beforeend', '<option value="' + (i + 1) + '">' + name + '</option>');
+    });
+
+    var nowYear = new Date().getFullYear();
+    yearEl.innerHTML = '<option value="">Year</option>';
+    for (var y = nowYear - 18; y >= nowYear - 100; y--) {
+      yearEl.insertAdjacentHTML('beforeend', '<option value="' + y + '">' + y + '</option>');
+    }
+  })();
+</script>
 </script>
 </body>
 </html>
