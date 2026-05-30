@@ -738,7 +738,7 @@ fast and simple</h1>
   document.getElementById('logo-img2').src = 'data:image/png;base64,' + LOGO_B64;
 
   // ── Google Sheets URL — paste yours here ──
-  var SHEET_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbxrYDEiDKUcgwOQRL_5el-OLlm4HqqIYO_mpUqcSiRT3lL4aAMs_DuHtKmWDc-2FRe2Lw/exec';
 
   function showForm() {
     document.getElementById('landing-card').style.display = 'none';
@@ -829,8 +829,13 @@ fast and simple</h1>
     var btn = document.getElementById('submit-btn');
     btn.textContent = 'Loading…';
     btn.disabled = true;
-    console.log('FundBoost apply — Step 1 complete. Payload:', vals);
-    // TODO (Creditbook): hand off to long form here.
+
+    fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(vals)
+    });
   }
 
   // Clear invalid state on a field as soon as the user fixes it
