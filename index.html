@@ -786,6 +786,7 @@ fast and simple</h1>
     var termsEl = document.getElementById('agreeTerms');
     vals.agreeTerms = termsEl.checked;
     vals.agreeMarketing = document.getElementById('agreeMarketing').checked;
+   vals.leadSource = leadSource;
     if (!termsEl.checked) {
       ok = false;
       document.getElementById('termsRow').classList.add('invalid');
