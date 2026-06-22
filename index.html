@@ -12,7 +12,7 @@
     --navy: #0B0F2E;
     --navy2: #131840;
     --purple: #5B4FEE;
-    --purple-dark: #4A3FD4;
+    --purple-dark: #4A3FD4;h
     --purple-glow: rgba(91,79,238,0.18);
     --white: #ffffff;
     --gray: #6B7280;
@@ -728,7 +728,7 @@ fast and simple</h1>
   document.getElementById('logo-img2').src = 'data:image/png;base64,' + LOGO_B64;
 
   // ── Google Sheets URL — paste yours here ──
-  var SHEET_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+  var SHEET_URL = 'https://script.google.com/macros/s/AKfycbxrYDEiDKUcgwOQRL_5el-OLlm4HqqIYO_mpUqcSiRT3lL4aAMs_DuHtKmWDc-2FRe2Lw/exec';
 
   function showForm() {
     document.getElementById('landing-card').style.display = 'none';
@@ -738,6 +738,12 @@ fast and simple</h1>
   function showLanding() {
     document.getElementById('form-card').style.display = 'none';
     document.getElementById('landing-card').style.display = 'block';
+  }
+
+  function showSuccess() {
+    document.getElementById('landing-card').style.display = 'none';
+    document.getElementById('form-card').style.display = 'none';
+    document.getElementById('success-card').style.display = 'block';
   }
 
   function submitForm() {
@@ -825,8 +831,15 @@ fast and simple</h1>
     var btn = document.getElementById('submit-btn');
     btn.textContent = 'Loading…';
     btn.disabled = true;
-    console.log('FundBoost apply — Step 1 complete. Payload:', vals);
-    // TODO (Creditbook): hand off to long form here.
+    // Send data to Google Sheets via Apps Script
+    fetch(SHEET_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(vals)
+    }).catch(function() {}); // silently fail — sheet row already saved
+
+    // Show success screen
+    showSuccess();
   }
 
   // Clear invalid state on a field as soon as the user fixes it
