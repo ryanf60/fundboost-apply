@@ -730,6 +730,16 @@ fast and simple</h1>
   // ── Google Sheets URL — paste yours here ──
   var SHEET_URL = 'https://script.google.com/macros/s/AKfycbxrYDEiDKUcgwOQRL_5el-OLlm4HqqIYO_mpUqcSiRT3lL4aAMs_DuHtKmWDc-2FRe2Lw/exec';
 
+  // ── Capture Lead Source from URL (UTM) ──
+  var urlParams = new URLSearchParams(window.location.search);
+  var utmSource = (urlParams.get('utm_source') || 'organic').toLowerCase();
+  var sourceMap = {
+    'google': 'Google Ads',
+    'newsletter': 'Newsletter',
+    'organic': 'Organic'
+  };
+  var leadSource = sourceMap[utmSource] || 'Organic';
+
   function showForm() {
     document.getElementById('landing-card').style.display = 'none';
     document.getElementById('form-card').style.display = 'block';
@@ -825,8 +835,20 @@ fast and simple</h1>
     var btn = document.getElementById('submit-btn');
     btn.textContent = 'Loading…';
     btn.disabled = true;
-    console.log('FundBoost apply — Step 1 complete. Payload:', vals);
-    // TODO (Creditbook): hand off to long form here.
+
+    // Attach lead source, then send to Apps Script (writes Google Sheet row + fires n8n webhook)
+    vals.leadSource = leadSource;
+
+    fetch(SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(vals)
+    })
+    .then(function() { done(); })
+    .catch(function() { done(); });
+
+    // TODO (CreditBook): once [LONG_FORM_URL] is ready, redirect to the long form here instead of done().
   }
 
   // Clear invalid state on a field as soon as the user fixes it
@@ -903,7 +925,6 @@ fast and simple</h1>
       yearEl.insertAdjacentHTML('beforeend', '<option value="' + y + '">' + y + '</option>');
     }
   })();
-</script>
 </script>
 </body>
 </html>
