@@ -90,7 +90,6 @@
     );
     animation: twinkle var(--dur, 4s) ease-in-out infinite;
     animation-delay: var(--delay, 0s);
-    filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
   }
   .rocket {
     position: absolute;
@@ -99,7 +98,6 @@
     transform: rotate(var(--rot, -25deg));
     animation: float var(--dur, 8s) ease-in-out infinite;
     animation-delay: var(--delay, 0s);
-    filter: drop-shadow(0 6px 14px rgba(0,0,0,0.25));
     opacity: 0.95;
   }
   @keyframes twinkle {
@@ -643,9 +641,9 @@ fast and simple</h1>
       return seed / 233280;
     }
     var isMobile = window.matchMedia('(max-width: 480px)').matches;
-    var DOTS = isMobile ? 35 : 70;
-    var SPARKLES = isMobile ? 7 : 14;
-    var ROCKETS = isMobile ? 3 : 5;
+    var DOTS = isMobile ? 15 : 25;
+var SPARKLES = 0;
+var ROCKETS = isMobile ? 2 : 3;
     // Small twinkling dots
     for (var i = 0; i < DOTS; i++) {
       var s = document.createElement('div');
@@ -692,34 +690,6 @@ fast and simple</h1>
       r.style.setProperty('--delay', (rand() * 3).toFixed(2) + 's');
       sf.appendChild(r);
     }
-
-    // ── Shooting stars: spawn one every 5-15s ──
-    function spawnShootingStar() {
-      var ss = document.createElement('div');
-      ss.className = 'shooting-star';
-      // Random origin in the upper portion of the screen
-      var startX = -5 + Math.random() * 60;        // -5% to 55%
-      var startY = -5 + Math.random() * 40;        // -5% to 35%
-      var angle  = 15 + Math.random() * 20;        // 15° — 35° downward
-      var distance = window.innerWidth * 0.7 + Math.random() * window.innerWidth * 0.3;
-      var duration = 800 + Math.random() * 600;    // 0.8s — 1.4s
-      ss.style.left = startX + 'vw';
-      ss.style.top  = startY + 'vh';
-      sf.appendChild(ss);
-      ss.animate(
-        [
-          { transform: 'rotate(' + angle + 'deg) translateX(0)',                opacity: 0 },
-          { transform: 'rotate(' + angle + 'deg) translateX(' + (distance * 0.15) + 'px)', opacity: 1, offset: 0.1 },
-          { transform: 'rotate(' + angle + 'deg) translateX(' + (distance * 0.9)  + 'px)', opacity: 1, offset: 0.9 },
-          { transform: 'rotate(' + angle + 'deg) translateX(' + distance + 'px)', opacity: 0 }
-        ],
-        { duration: duration, easing: 'cubic-bezier(.2,.7,.4,1)' }
-      );
-      setTimeout(function() { ss.remove(); }, duration + 100);
-      // Schedule next — random gap so they feel occasional
-      setTimeout(spawnShootingStar, 5000 + Math.random() * 10000);
-    }
-    setTimeout(spawnShootingStar, 1500);
   })();
 
   // ── Embed logo as base64 ──
