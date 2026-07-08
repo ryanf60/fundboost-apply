@@ -707,10 +707,11 @@ var ROCKETS = isMobile ? 2 : 3;
   var urlParams = new URLSearchParams(window.location.search);
   var utmSource = (urlParams.get('utm_source') || 'organic').toLowerCase();
   var sourceMap = {
-    'google': 'Google Ads',
-    'newsletter': 'Newsletter',
-    'organic': 'Organic'
-  };
+      'google': 'Google Ads',
+      'newsletter': 'Newsletter',
+      'sms': 'SMS',
+      'organic': 'Organic'
+    };
   var leadSource = sourceMap[utmSource] || 'Organic';
 
   function showForm() {
