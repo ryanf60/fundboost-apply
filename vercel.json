@@ -9,7 +9,7 @@
         { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google.com https://www.google.ca https://googleads.g.doubleclick.net https://www.googletagmanager.com; connect-src 'self' https://script.google.com https://www.google-analytics.com https://stats.g.doubleclick.net; frame-src https://bid.g.doubleclick.net"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.google.com https://www.google.ca https://googleads.g.doubleclick.net https://www.googletagmanager.com; connect-src 'self' https://script.google.com https://www.google-analytics.com https://stats.g.doubleclick.net https://www.googletagmanager.com; frame-src https://bid.g.doubleclick.net https://td.doubleclick.net"
         },
         {
           "key": "Strict-Transport-Security",
