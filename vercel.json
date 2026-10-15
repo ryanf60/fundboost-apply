@@ -1,4 +1,17 @@
 {
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "apply.fundboost.ca"
+        }
+      ],
+      "destination": "https://fundboost.ca/sign-up",
+      "permanent": false
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
